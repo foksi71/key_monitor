@@ -11,7 +11,7 @@ services:
   - type: web
     name: tg-monitoring
     env: python
-    runtime: python3.13
+    runtime: python3.12
     branch: main
     buildCommand: ""
     startCommand: python main.py
