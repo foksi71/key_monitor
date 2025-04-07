@@ -224,6 +224,7 @@ MONITORED_CHANNELS = [
     -1002191813151,  # SHELL
     -1002185637554,  # Spark
     -1002070685270,  # Blood
+    -1002540770220,  # Velisse
     -1002318593261,  # екз вм
     -1001178398345,  # мій канал
 ]
@@ -250,7 +251,7 @@ KEYWORDS = [
 
 # Отримувачі (username або ID)
 TARGET_ACCOUNTS = [
-    'andryy_99', 'neksiix', 'dim_gtr', 'maxx_py', 'kentvr01', 'romixsi', 'k_valer1',
+    'andryy_99', 'neksiix', 'dim_gtr', 'maxx_py', 'kentvr01', 'romixsi', 'k_valer1', 'karpatyu', 'karnazh01', 
 ]
 
 # Ініціалізація Telegram клієнта
