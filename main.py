@@ -153,27 +153,73 @@ app = Flask(__name__)
 def home():
     return "Bot is running!", 200
 
-# Обробка нових повідомлень
+
+
+
+#ПАУЗА
 @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
 async def handle_new_message(event):
     current_hour = datetime.now().hour
+
     if 0 <= current_hour < 9:
-        logger.info("Нічний режим: повідомлення ігнорується")
-        return  # нічний режим, не пересилаємо
-        
+        logger.info("⏰ Нічний режим: повідомлення ігнорується")
+        return
+
     message_text = event.message.message.lower()
 
     if any(keyword in message_text for keyword in KEYWORDS):
-        logger.info(f"Знайдено повідомлення: {event.message.message}")
+        logger.info(f"🔍 Знайдено повідомлення: {event.message.message}")
+
         for account_id in TARGET_ACCOUNTS:
             try:
-                entity = await client.get_entity(account_id)  # Отримання сутності
+                entity = await client.get_entity(account_id)
                 forwarded_message = await client.forward_messages(entity, event.message)
-                logger.info(f"Повідомлення переслано до {account_id}")
+                logger.info(f"📤 Повідомлення переслано до {account_id}")
 
-                asyncio.create_task(delete_message_after_delay(entity.id, forwarded_message.id, 600))
+                asyncio.create_task(
+                    delete_message_after_delay(entity.id, forwarded_message.id, 600)
+                )
             except Exception as e:
-                logger.error(f"Помилка при пересиланні до {account_id}: {e}")
+                logger.error(f"❌ Помилка при пересиланні до {account_id}: {e}")
+
+        # ⏳ Пауза перед імітацією офлайн
+        await asyncio.sleep(5)
+
+        # 🕓 Імітація офлайн: пауза без disconnect
+        logger.info("🕓 Імітація офлайн: чекаємо 10 секунд...")
+        await asyncio.sleep(10)
+        logger.info("✅ Повернулись до активності")
+
+
+
+
+
+
+
+
+
+
+# Обробка нових повідомлень
+# @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
+# async def handle_new_message(event):
+#     current_hour = datetime.now().hour
+#     if 0 <= current_hour < 9:
+#         logger.info("Нічний режим: повідомлення ігнорується")
+#         return  # нічний режим, не пересилаємо
+        
+#     message_text = event.message.message.lower()
+
+#     if any(keyword in message_text for keyword in KEYWORDS):
+#         logger.info(f"Знайдено повідомлення: {event.message.message}")
+#         for account_id in TARGET_ACCOUNTS:
+#             try:
+#                 entity = await client.get_entity(account_id)  # Отримання сутності
+#                 forwarded_message = await client.forward_messages(entity, event.message)
+#                 logger.info(f"Повідомлення переслано до {account_id}")
+
+#                 asyncio.create_task(delete_message_after_delay(entity.id, forwarded_message.id, 600))
+#             except Exception as e:
+#                 logger.error(f"Помилка при пересиланні до {account_id}: {e}")
 
 # Видалення повідомлення із затримкою
 async def delete_message_after_delay(chat_id, message_id, delay):
