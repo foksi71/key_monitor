@@ -82,120 +82,8 @@
 
 
 
-# from telethon import TelegramClient, events
-# from flask import Flask
-# import asyncio
-# import threading
-# import os
-# import logging
 
-# # Налаштування логера
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
 
-# # Ваші API_ID і API_HASH
-# API_ID = 21033220
-# API_HASH = 'a15f244bc9d48bc70fa7e192fe6e47ec'
-
-# # Список ID каналів для моніторингу
-# MONITORED_CHANNELS = [
-#     -1001800023562,  # EdgEarnings🐩
-#     -1001762006702,  # EdgEarnings premium
-#     -1002071220835,  # C H A N E L 🦎
-#     -1001962975152,  # Lupo 💌
-#     -1002191813151,  # SHELL
-#     -1002185637554,  # Spark
-#     -1002070685270,  # Blood
-#     -1002318593261,  # екз вм
-#     -1001178398345,  # мій канал
-# ]
-
-# # Ключові слова для пошуку (всі маленькими літерами)
-# KEYWORDS = [
-#     "скоро завдання",
-#     "завдання на кошти",
-#     "потрібно",
-#     "потрібна",
-#     "обов'язково нік",
-#     "завдання через",
-#     "завдання о", 
-#     "підписка",
-#     "лайк",
-#     "коментар",
-#     "оплата",
-#     "коп",
-#     "грн",
-# ]
-
-# # Цільовий чат (ID або username)
-# TARGET_CHAT = -1002409928631  # 💸 ЗАВДАННЯ 💸
-
-# # Ініціалізація Telegram-клієнта
-# client = TelegramClient('monitoring_session', API_ID, API_HASH)
-
-# # Flask HTTP-сервер
-# app = Flask(__name__)
-
-# @app.route("/")
-# def home():
-#     return "Bot is running!", 200
-
-# # Функція для запуску Telegram клієнта в окремому потоці
-# def run_telegram_client():
-#     async def main():
-#         # Авторизація
-#         logger.info("Вхід у Telegram...")
-#         await client.start()
-
-#         # Перевірка авторизації
-#         me = await client.get_me()
-#         logger.info(f"Ви увійшли як {me.first_name} (@{me.username})")
-
-#         # Обробник для моніторингу нових повідомлень
-#         @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
-#         async def message_handler(event):
-#             message_text = event.message.message or ""
-
-#             # Перевірка наявності пересланого повідомлення
-#             if event.message.forward and hasattr(event.message.forward, 'chat_id') and hasattr(event.message.forward, 'msg_id'):
-#                 try:
-#                     original_message = await client.get_messages(event.message.forward.chat_id, ids=event.message.forward.msg_id)
-#                     if original_message and original_message.message:
-#                         message_text += " " + original_message.message
-#                 except Exception as e:
-#                     logger.warning(f"Не вдалося отримати текст пересланого повідомлення: {e}")
-
-#             # Перевірка ключових слів у тексті
-#             if any(keyword in message_text.lower() for keyword in KEYWORDS):
-#                 try:
-#                     forwarded_message = await event.forward_to(TARGET_CHAT)
-#                     logger.info(f"Повідомлення переслано: {message_text} до {TARGET_CHAT}")
-
-#                     # Запуск асинхронного завдання для видалення повідомлення
-#                     asyncio.create_task(delete_message_after_delay(TARGET_CHAT, forwarded_message.id, 600))
-#                 except Exception as e:
-#                     logger.error(f"Помилка при пересиланні повідомлення: {e}")
-
-#         logger.info("Запуск моніторингу...")
-#         await client.run_until_disconnected()
-
-#     asyncio.run(main())
-
-# # Асинхронна функція для видалення повідомлення з затримкою
-# async def delete_message_after_delay(chat_id, message_id, delay):
-#     await asyncio.sleep(delay)
-#     try:
-#         await client.delete_messages(chat_id, message_id)
-#         logger.info(f"Повідомлення видалено: {message_id} з {chat_id}")
-#     except Exception as e:
-#         logger.error(f"Не вдалося видалити повідомлення з {chat_id}: {e}")
-
-# # Запуск Telegram клієнта у фоновому потоці
-# threading.Thread(target=run_telegram_client, daemon=True).start()
-
-# # Запуск Flask сервера
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 
 
@@ -269,7 +157,7 @@ def home():
 @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
 async def handle_new_message(event):
     current_hour = datetime.now().hour
-    if 0 <= current_hour < 16:
+    if 0 <= current_hour < 9:
         logger.info("Нічний режим: повідомлення ігнорується")
         return  # нічний режим, не пересилаємо
         
