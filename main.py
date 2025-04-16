@@ -94,6 +94,7 @@ import asyncio
 import threading
 import os
 import logging
+import pytz
 
 # Налаштування логування
 logging.basicConfig(level=logging.INFO)
@@ -163,7 +164,6 @@ def home():
         
 #     message_text = event.message.message.lower()
 
-import pytz
 @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
 async def handle_new_message(event):
     timezone = pytz.timezone("Europe/Kyiv")
