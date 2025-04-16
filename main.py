@@ -154,13 +154,25 @@ def home():
     return "Bot is running!", 200
 
 # Обробка нових повідомлень
+# @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
+# async def handle_new_message(event):
+#     current_hour = datetime.now().hour
+#     if 0 <= current_hour < 9:
+#         logger.info("Нічний режим: повідомлення ігнорується")
+#         return  # нічний режим, не пересилаємо
+        
+#     message_text = event.message.message.lower()
+
+import pytz
 @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
 async def handle_new_message(event):
-    current_hour = datetime.now().hour
+    timezone = pytz.timezone("Europe/Kyiv")
+    current_hour = datetime.now(timezone).hour
+
     if 0 <= current_hour < 9:
         logger.info("Нічний режим: повідомлення ігнорується")
-        return  # нічний режим, не пересилаємо
-        
+        return
+
     message_text = event.message.message.lower()
 
     if any(keyword in message_text for keyword in KEYWORDS):
