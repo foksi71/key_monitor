@@ -134,8 +134,8 @@ KEYWORDS = [
 
 # Отримувачі (username або ID)
 TARGET_ACCOUNTS = [
-    'andryy_99', 'dim_gtr', 'maxx_py', 'kentvr01', 'romixsi', 'k_valer1', 'karpatyu', 'karnazh01', #'neksiix'
-]
+    'andryy_99', 'dim_gtr', 'maxx_py', 'kentvr01', 'romixsi', 'k_valer1', 'karpatyu', 'karnazh01',
+]  #'neksiix'
 
 # Ініціалізація Telegram клієнта
 client = TelegramClient(SESSION_NAME, API_ID, API_HASH)
