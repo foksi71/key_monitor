@@ -84,6 +84,10 @@
 
 from telethon import TelegramClient, events
 from flask import Flask
+
+from datetime import datetime
+from zoneinfo import ZoneInfo  # для Python 3.9+
+
 import asyncio
 import threading
 import os
@@ -150,6 +154,12 @@ def home():
 # Обробка нових повідомлень
 @client.on(events.NewMessage(chats=MONITORED_CHANNELS))
 async def handle_new_message(event):
+    # Київський час
+    current_hour = datetime.now(ZoneInfo("Europe/Kyiv")).hour
+    if 0 <= current_hour < 15:
+        logger.info("Нічний режим активний – повідомлення ігноруються")
+        return
+
     message_text = event.message.message.lower()
 
     if any(keyword in message_text for keyword in KEYWORDS):
@@ -163,6 +173,7 @@ async def handle_new_message(event):
                 asyncio.create_task(delete_message_after_delay(entity.id, forwarded_message.id, 600))
             except Exception as e:
                 logger.error(f"Помилка при пересиланні до {account_id}: {e}")
+
 
 # Видалення повідомлення із затримкою
 async def delete_message_after_delay(chat_id, message_id, delay):
