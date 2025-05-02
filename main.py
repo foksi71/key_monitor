@@ -106,7 +106,7 @@ SESSION_NAME = 'main_account_session'
 MONITORED_CHANNELS = [
     -1001800023562,  # EdgEarnings🐩
     -1001762006702,  # EdgEarnings premium
-    -1002071220835,  # C H A N E L 🦎
+    # -1002071220835,  # C H A N E L 🦎
     -1001962975152,  # Lupo 💌
     -1002191813151,  # SHELL
     -1002185637554,  # Spark
