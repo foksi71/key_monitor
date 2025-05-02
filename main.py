@@ -156,7 +156,7 @@ def home():
 async def handle_new_message(event):
     # Київський час
     current_hour = datetime.now(ZoneInfo("Europe/Kyiv")).hour
-    if 0 <= current_hour < 10:
+    if 0 <= current_hour < 18:
         logger.info("Нічний режим активний – повідомлення ігноруються")
         return
 
